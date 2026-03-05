@@ -1,0 +1,36 @@
+{
+    "id": "inventory",
+    "id_case": {
+        "snake": "inventory",
+        "pascal": "Inventory",
+        "slug": "inventory",
+        "studly": "inventory"
+    },
+    "name": "Inventory",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Inventory (Bahan)",
+            "position": 2,
+            "route": "inventory.materials.index",
+            "icon": "fa-solid fa-box-open"
+        }
+    }
+}

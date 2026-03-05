@@ -1,0 +1,72 @@
+{
+    "app_code": "hpp",
+    "app_name": "hpp",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "base_version": "",
+    "urls": {
+        "domain": {
+            "dev": "",
+            "prod": ""
+        },
+        "prefix": "\/",
+        "api_prefix": "\/api"
+    },
+    "title": "hpp",
+    "description": "",
+    "multi_language": false,
+    "enabled_languages": [
+        "en"
+    ],
+    "dependencies": {
+        "npm": {
+            "main": {
+                "jquery": "^3.7",
+                "@alpinejs\/mask": "^3.15.0",
+                "@alpinejs\/intersect": "^3.15.0",
+                "@alpinejs\/resize": "^3.15.0",
+                "@alpinejs\/persist": "^3.15.0",
+                "@alpinejs\/focus": "^3.15.0",
+                "@alpinejs\/collapse": "^3.15.0",
+                "@alpinejs\/anchor": "^3.15.0",
+                "@alpinejs\/morph": "^3.15.0",
+                "@alpinejs\/sort": "^3.15.0",
+                "@fortawesome\/fontawesome-free": "^7.1.0",
+                "flatpickr": "^4.6.13",
+                "glob": "^13.0.0",
+                "vite-plugin-static-copy": "^3.1.4"
+            },
+            "dev": {
+                "vite-plugin-static-copy": "^3.1.4",
+                "glob": "^11.0.0"
+            }
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "themes": {
+        "active": "default",
+        "fallback": "default",
+        "css": {
+            "all": [],
+            "app": [],
+            "guest": [],
+            "frontend": []
+        },
+        "js": {
+            "all": [],
+            "app": [],
+            "guest": [],
+            "frontend": []
+        },
+        "headers": {
+            "all": [],
+            "app": [],
+            "guest": [],
+            "frontend": []
+        }
+    }
+}

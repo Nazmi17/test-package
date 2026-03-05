@@ -1,0 +1,49 @@
+{
+    "id": "accounting",
+    "id_case": {
+        "snake": "accounting",
+        "pascal": "Accounting",
+        "slug": "accounting",
+        "studly": "accounting"
+    },
+    "name": "Accounting",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Pembukuan",
+            "position": 5,
+            "icon": "fa-solid fa-book-journal-whills",
+            "sub": {
+                "accounts": {
+                    "id": "accounts",
+                    "name": "Data Akun",
+                    "route": "accounting.accounts.index",
+                    "icon": "fa-solid fa-list"
+                },
+                "journals": {
+                    "id": "journals",
+                    "name": "Jurnal Transaksi",
+                    "route": "accounting.journals.index",
+                    "icon": "fa-solid fa-scale-balanced"
+                }
+            }
+        }
+    }
+}

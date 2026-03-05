@@ -1,0 +1,948 @@
+/**
+ * Default Synapse Theme - Modern Professional Design
+ *
+ * A comprehensive theme showcasing Tailwind v4 @theme capabilities
+ * Features: Custom color palette, typography, spacing, components, animations
+ */
+
+@theme {
+    /* ========================================
+     BRAND COLORS - Modern Blue Palette
+     ======================================== */
+    --color-brand-50: oklch(0.97 0.01 240);
+    --color-brand-100: oklch(0.94 0.02 240);
+    --color-brand-200: oklch(0.87 0.05 240);
+    --color-brand-300: oklch(0.75 0.1 240);
+    --color-brand-400: oklch(0.65 0.15 240);
+    --color-brand-500: oklch(0.55 0.2 240);
+    --color-brand-600: oklch(0.45 0.18 240);
+    --color-brand-700: oklch(0.38 0.15 240);
+    --color-brand-800: oklch(0.28 0.12 240);
+    --color-brand-900: oklch(0.2 0.08 240);
+    --color-brand-950: oklch(0.13 0.05 240);
+
+    /* Success Color Scale */
+    --color-success-50: oklch(0.95 0.05 145);
+    --color-success-100: oklch(0.9 0.08 145);
+    --color-success-200: oklch(0.8 0.1 145);
+    --color-success-300: oklch(0.7 0.12 145);
+    --color-success-400: oklch(0.65 0.14 145);
+    --color-success-500: oklch(0.6 0.15 145);
+    --color-success-600: oklch(0.55 0.14 145);
+    --color-success-700: oklch(0.48 0.12 145);
+    --color-success-800: oklch(0.4 0.1 145);
+    --color-success-900: oklch(0.3 0.08 145);
+
+    /* Warning Color Scale */
+    --color-warning-50: oklch(0.95 0.05 75);
+    --color-warning-100: oklch(0.9 0.1 75);
+    --color-warning-200: oklch(0.85 0.14 75);
+    --color-warning-300: oklch(0.78 0.16 75);
+    --color-warning-400: oklch(0.73 0.17 75);
+    --color-warning-500: oklch(0.7 0.18 75);
+    --color-warning-600: oklch(0.65 0.16 75);
+    --color-warning-700: oklch(0.58 0.14 75);
+    --color-warning-800: oklch(0.48 0.12 75);
+    --color-warning-900: oklch(0.38 0.1 75);
+
+    /* Danger/Error Color Scale */
+    --color-danger-50: oklch(0.95 0.05 25);
+    --color-danger-100: oklch(0.9 0.1 25);
+    --color-danger-200: oklch(0.82 0.15 25);
+    --color-danger-300: oklch(0.72 0.18 25);
+    --color-danger-400: oklch(0.65 0.2 25);
+    --color-danger-500: oklch(0.58 0.22 25);
+    --color-danger-600: oklch(0.52 0.2 25);
+    --color-danger-700: oklch(0.45 0.18 25);
+    --color-danger-800: oklch(0.38 0.15 25);
+    --color-danger-900: oklch(0.3 0.12 25);
+
+    /* Info Color Scale */
+    --color-info-50: oklch(0.95 0.05 230);
+    --color-info-100: oklch(0.9 0.08 230);
+    --color-info-200: oklch(0.82 0.12 230);
+    --color-info-300: oklch(0.73 0.15 230);
+    --color-info-400: oklch(0.68 0.17 230);
+    --color-info-500: oklch(0.65 0.18 230);
+    --color-info-600: oklch(0.6 0.16 230);
+    --color-info-700: oklch(0.52 0.14 230);
+    --color-info-800: oklch(0.43 0.12 230);
+    --color-info-900: oklch(0.33 0.1 230);
+
+    /* ========================================
+     LAYOUT SPACING
+     ======================================== */
+    --spacing-sidebar-width: 16rem;
+    --spacing-sidebar-collapsed: 4rem;
+    --spacing-header-height: 4rem;
+    --spacing-content-padding: 2rem;
+    --spacing-card-padding: 1.5rem;
+
+    /* ========================================
+     TYPOGRAPHY SCALE
+     ======================================== */
+    --font-size-display: 3.5rem;
+    --font-size-heading-1: 2.5rem;
+    --font-size-heading-2: 2rem;
+    --font-size-heading-3: 1.5rem;
+    --font-size-body: 1rem;
+    --font-size-small: 0.875rem;
+    --font-size-tiny: 0.75rem;
+
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* ========================================
+     BORDER & SHADOW SYSTEM
+     ======================================== */
+    --radius-none: 0;
+    --radius-sm: 0.25rem;
+    --radius-default: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-full: 9999px;
+
+    /* Modern shadow system */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+        0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+        0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+        0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* ========================================
+     ANIMATION TIMING
+     ======================================== */
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
+body {
+    @apply antialiased bg-white text-gray-900;
+}
+
+/* ========================================
+   LAYOUT COMPONENTS
+   ======================================== */
+
+/* Sidebar - Modern Professional Design */
+.theme-sidebar {
+    @apply fixed left-0 top-0 bottom-0 z-40;
+    @apply bg-gradient-to-br from-brand-500 to-brand-600;
+    @apply text-white shadow-2xl;
+    @apply transition-all duration-300 ease-in-out;
+    width: var(--spacing-sidebar-width);
+}
+
+.theme-sidebar.collapsed {
+    width: var(--spacing-sidebar-collapsed);
+}
+
+/* Sidebar Logo Area */
+.theme-sidebar-logo {
+    @apply flex items-center gap-3 px-6 py-5;
+    @apply border-b border-white/10;
+    height: var(--spacing-header-height);
+}
+
+.theme-sidebar-logo img {
+    @apply w-10 h-10 rounded-lg shadow-md;
+}
+
+.theme-sidebar-logo span {
+    @apply text-xl font-bold tracking-tight;
+    @apply transition-opacity duration-200;
+}
+
+.theme-sidebar.collapsed .theme-sidebar-logo span {
+    @apply opacity-0;
+}
+
+/* Sidebar Navigation */
+.theme-sidebar-nav {
+    @apply flex flex-col gap-1 px-3 py-4;
+}
+
+.theme-sidebar-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg;
+    @apply text-white hover:text-white;
+    @apply hover:bg-white/15 transition-all duration-200;
+    @apply font-medium text-sm;
+}
+
+.theme-sidebar-nav-item.active {
+    @apply bg-white shadow-md font-semibold;
+    color: oklch(0.38 0.15 240) !important; /* brand-700 forced */
+}
+
+.theme-sidebar-nav-item i,
+.theme-sidebar-nav-item svg {
+    @apply text-lg w-5 text-center text-white;
+}
+
+.theme-sidebar-nav-item.active i,
+.theme-sidebar-nav-item.active svg {
+    color: oklch(0.38 0.15 240) !important; /* brand-700 forced */
+}
+
+.theme-sidebar-nav-item span {
+    @apply transition-opacity duration-200;
+}
+
+.theme-sidebar.collapsed .theme-sidebar-nav-item span {
+    @apply opacity-0 w-0;
+}
+
+/* Header - Clean Modern Design */
+.theme-header {
+    @apply fixed top-0 right-0 z-30;
+    @apply bg-white border-b border-gray-200;
+    @apply shadow-sm;
+    @apply transition-all duration-300;
+    height: var(--spacing-header-height);
+    left: var(--spacing-sidebar-width);
+}
+
+.theme-header.sidebar-collapsed {
+    left: var(--spacing-sidebar-collapsed);
+}
+
+.theme-header-content {
+    @apply flex items-center justify-between px-6 h-full;
+}
+
+/* Header Search */
+.theme-header-search {
+    @apply flex-1 max-w-md;
+}
+
+.theme-header-search input {
+    @apply w-full px-4 py-2 rounded-lg;
+    @apply bg-gray-100 border-transparent;
+    @apply focus:bg-white focus:border-brand-300 focus:ring-2 focus:ring-brand-200;
+    @apply transition-all duration-200;
+}
+
+/* Header Actions */
+.theme-header-actions {
+    @apply flex items-center gap-3;
+}
+
+.theme-header-button {
+    @apply relative p-2 rounded-lg text-gray-600;
+    @apply hover:bg-gray-100 hover:text-brand-600;
+    @apply transition-colors duration-200;
+}
+
+.theme-header-button .badge {
+    @apply absolute -top-1 -right-1 w-5 h-5;
+    @apply flex items-center justify-center;
+    @apply bg-danger-500 text-white text-xs font-bold rounded-full;
+}
+
+/* User Menu */
+.theme-user-menu {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg;
+    @apply hover:bg-gray-100 cursor-pointer;
+    @apply transition-colors duration-200;
+}
+
+.theme-user-avatar {
+    @apply w-10 h-10 rounded-full;
+    @apply bg-gradient-to-br from-brand-400 to-brand-600;
+    @apply flex items-center justify-center;
+    @apply text-white font-bold shadow-md;
+}
+
+/* Main Content Area */
+.theme-main-content {
+    @apply transition-all duration-300;
+    margin-left: var(--spacing-sidebar-width);
+    margin-top: var(--spacing-header-height);
+    min-height: calc(100vh - var(--spacing-header-height));
+}
+
+.theme-main-content.sidebar-collapsed {
+    margin-left: var(--spacing-sidebar-collapsed);
+}
+
+.theme-content-wrapper {
+    @apply p-6;
+}
+
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+.theme-card,
+.card {
+    @apply bg-white rounded-xl shadow-sm;
+    @apply border border-gray-200;
+    @apply transition-shadow duration-200;
+    @apply hover:shadow-md;
+}
+
+.theme-card-header,
+.card-header {
+    @apply px-6 py-4 border-b border-gray-200/50;
+    @apply flex items-center justify-between;
+}
+
+.theme-card-title {
+    @apply text-lg font-semibold text-gray-900;
+}
+
+.theme-card-body,
+.card-body {
+    padding: var(--spacing-card-padding);
+}
+
+/* Card body text styling - only affects direct children */
+.theme-card-body > h1,
+.theme-card-body > h2,
+.theme-card-body > h3,
+.card-body > h1,
+.card-body > h2,
+.card-body > h3 {
+    @apply text-gray-900 font-bold;
+}
+
+.theme-card-body > p,
+.card-body > p {
+    @apply text-gray-700;
+}
+
+.theme-card-footer,
+.card-footer {
+    @apply px-6 py-4 border-t border-gray-200/50;
+    @apply bg-gray-50/50;
+}
+
+/* ========================================
+   BUTTON COMPONENTS - Standardized Classes
+   ======================================== */
+
+/* Base button styles */
+.theme-btn,
+.btn,
+button[type="submit"],
+button[type="button"] {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2;
+    @apply font-medium rounded-lg;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Primary button */
+.theme-btn-primary,
+.btn.primary {
+    @apply bg-brand-600 text-white;
+    @apply hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30;
+    @apply focus:ring-brand-500;
+}
+
+/* Secondary button */
+.theme-btn-secondary,
+.btn.secondary {
+    @apply bg-gray-200 text-gray-900;
+    @apply hover:bg-gray-300;
+    @apply focus:ring-gray-400;
+}
+
+/* Success button */
+.theme-btn-success,
+.btn.success {
+    @apply bg-success-500 text-white;
+    @apply hover:brightness-110;
+    @apply focus:ring-success-500;
+}
+
+/* Danger button */
+.theme-btn-danger,
+.btn.danger {
+    @apply bg-danger-500 text-white;
+    @apply hover:brightness-110;
+    @apply focus:ring-danger-500;
+}
+
+/* Warning button */
+.btn.warning {
+    @apply bg-warning-500 text-white;
+    @apply hover:brightness-110;
+    @apply focus:ring-warning-500;
+}
+
+/* Info button */
+.btn.info {
+    @apply bg-info-500 text-white;
+    @apply hover:brightness-110;
+    @apply focus:ring-info-500;
+}
+
+/* ========================================
+   FORM COMPONENTS - Standardized Classes
+   ======================================== */
+
+/* Form wrapper */
+.theme-form-group,
+.form-box {
+    @apply mb-4;
+}
+
+/* Form labels */
+.theme-form-label,
+.form-box label,
+label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+}
+
+/* Form inputs */
+.theme-form-input,
+.form-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    @apply w-full px-4 py-2 rounded-lg;
+    @apply border border-gray-300 bg-white text-gray-900;
+    @apply focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+    @apply transition-all duration-200;
+    @apply placeholder:text-gray-400;
+}
+
+.theme-form-input:disabled,
+.form-input:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+    @apply bg-gray-100 cursor-not-allowed text-gray-500;
+}
+
+/* Input with error state */
+.theme-form-input.has-error,
+.form-input.has-error,
+input.has-error {
+    @apply border-danger-500 focus:ring-danger-200;
+}
+
+/* Form error message */
+.theme-form-error,
+.form-error-message {
+    @apply mt-1 text-sm text-danger-600;
+}
+
+/* Checkboxes and radios */
+.theme-form-checkbox,
+.form-checkbox,
+input[type="checkbox"],
+input[type="radio"] {
+    @apply w-4 h-4 text-brand-600 border-gray-300 rounded;
+    @apply focus:ring-2 focus:ring-brand-200;
+}
+
+/* Input groups (icon + input) */
+.input-group {
+    @apply relative flex items-center;
+}
+
+.input-group-item {
+    @apply absolute z-10 flex items-center justify-center;
+    @apply w-12 h-full text-gray-600;
+    @apply pointer-events-none;
+}
+
+.input-group-item.left {
+    @apply left-0;
+}
+
+.input-group-item.right {
+    @apply right-0;
+}
+
+.input-group-item .fa-solid,
+.input-group-item .fa-regular,
+.input-group-item .fa-brands {
+    @apply text-gray-600 text-base;
+}
+
+/* ========================================
+   BADGE & TAG COMPONENTS
+   ======================================== */
+.theme-badge {
+    @apply inline-flex items-center px-2.5 py-0.5;
+    @apply text-xs font-medium rounded-full;
+}
+
+.theme-badge-primary {
+    @apply bg-brand-100 text-brand-800;
+}
+
+.theme-badge-success {
+    @apply bg-green-100 text-green-800;
+}
+
+.theme-badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.theme-badge-danger {
+    @apply bg-red-100 text-red-800;
+}
+
+/* ========================================
+   TABLE COMPONENTS
+   ======================================== */
+.theme-table {
+    @apply w-full border-collapse;
+}
+
+.theme-table thead {
+    @apply bg-gray-50 border-b-2 border-gray-200;
+}
+
+.theme-table th {
+    @apply px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+}
+
+.theme-table td {
+    @apply px-6 py-4 text-sm text-gray-900 border-b border-gray-200;
+}
+
+.theme-table tbody tr {
+    @apply hover:bg-gray-50 transition-colors duration-150;
+}
+
+/* ========================================
+   UTILITY CLASSES - Text Colors
+   ======================================== */
+.text-primary {
+    @apply text-brand-600;
+}
+
+.text-secondary {
+    @apply text-gray-600;
+}
+
+.text-success {
+    @apply text-success-600;
+}
+
+.text-danger,
+.text-error {
+    @apply text-danger-600;
+}
+
+.text-warning {
+    @apply text-warning-600;
+}
+
+.text-info {
+    @apply text-info-600;
+}
+
+.text-muted {
+    @apply text-gray-500;
+}
+
+/* ========================================
+   DARK MODE - Disabled for Consistent Light Theme
+   ======================================== */
+/* All dark mode styles removed to maintain light theme regardless of OS settings */
+
+/* ========================================
+   ACTUAL LAYOUT STYLING - Sidebar & Header
+   Styles for the existing synapps layout partials
+   ======================================== */
+
+/* ========================================
+   SIDEBAR STYLING
+   ======================================== */
+.sidebar {
+    @apply bg-gradient-to-br from-brand-500 to-brand-600;
+    @apply shadow-xl;
+}
+
+.sidebar-header {
+    @apply flex items-center gap-3 px-6 py-5;
+    @apply border-b border-white/20;
+    height: var(--spacing-header-height);
+}
+
+.sidebar-header .logo img {
+    @apply h-8 w-auto max-w-full;
+}
+
+.sidebar-header .logo-icon {
+    @apply h-10 w-10 rounded-lg shadow-md;
+}
+
+/* Menu Container */
+.menu-container {
+    @apply flex-1 overflow-y-auto;
+    @apply py-4;
+}
+
+.menu-container::-webkit-scrollbar {
+    @apply w-1.5;
+}
+
+.menu-container::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+.menu-container::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+    @apply hover:bg-white/20;
+}
+
+/* Menu Heading */
+.menu-heading {
+    @apply px-6 py-2 mb-2;
+}
+
+.menu-group-title {
+    @apply text-xs font-bold text-white/80 uppercase tracking-wider;
+}
+
+.menu-group-icon {
+    @apply text-white/60;
+}
+
+/* Menu List */
+.menu {
+    @apply flex flex-col gap-1 px-3;
+}
+
+/* Menu Items - targeting the nav-item component output */
+.menu-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg;
+    @apply text-white hover:text-white;
+    @apply hover:bg-white/15 transition-all duration-200;
+    @apply font-medium text-sm;
+    @apply w-full text-left;
+}
+
+.menu-item-active {
+    @apply bg-white shadow-md font-semibold;
+    color: oklch(0.38 0.15 240) !important; /* brand-700 forced */
+}
+
+.menu-item-inactive {
+    @apply text-white;
+}
+
+/* Menu item text */
+.menu-item-text {
+    @apply transition-opacity duration-200;
+}
+
+/* Menu icons */
+.menu-item-icon-active {
+    @apply w-5 h-5 shrink-0;
+    color: oklch(0.38 0.15 240) !important; /* brand-700 forced */
+}
+
+.menu-item-icon-inactive {
+    @apply w-5 h-5 shrink-0 text-white;
+}
+
+.menu a:hover svg,
+.menu button:hover svg {
+    @apply scale-110;
+}
+
+/* Submenu */
+.submenu {
+    @apply ml-8 mt-1 mb-2;
+    @apply border-l-2 border-white/20;
+    @apply pl-4;
+}
+
+.submenu a {
+    @apply py-2 text-sm;
+    @apply text-white/90 hover:text-white;
+}
+
+.submenu a.active {
+    @apply text-white bg-transparent shadow-none;
+    @apply border-l-2 border-white -ml-[18px] pl-4;
+    @apply font-semibold;
+}
+
+/* ========================================
+   HEADER STYLING
+   ======================================== */
+.header {
+    @apply sticky top-0 z-30;
+    @apply bg-white border-b border-gray-200;
+    @apply shadow-sm;
+    @apply transition-all duration-300;
+}
+
+.header-box {
+    @apply flex flex-col lg:flex-row lg:items-center lg:justify-between;
+    @apply gap-4;
+}
+
+.inner-header {
+    @apply flex items-center gap-4 px-5 py-3.5;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+    @apply flex items-center justify-center;
+    @apply h-11 w-11 rounded-full;
+    @apply border border-gray-200 bg-white;
+    @apply text-gray-500 hover:bg-gray-100 hover:text-gray-700;
+    @apply transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-200;
+}
+
+/* Menu Button (mobile) */
+.menu-btn {
+    @apply lg:hidden flex items-center justify-center;
+    @apply h-11 w-11 rounded-full;
+    @apply border border-gray-200 bg-white;
+    @apply text-gray-500 hover:bg-gray-100 hover:text-gray-700;
+    @apply transition-colors duration-200;
+}
+
+/* Search input in header */
+.header input[type="text"] {
+    @apply focus:border-brand-300 focus:ring-brand-500/10;
+}
+
+/* Header notification & user dropdowns */
+.header button[class*="hover:text"] {
+    @apply transition-all duration-200;
+}
+
+.header button[class*="hover:text"]:hover {
+    @apply scale-105;
+}
+
+/* ========================================
+   PAGE WRAPPER & MAIN CONTAINER
+   ======================================== */
+.page-wrapper {
+    @apply flex min-h-screen;
+}
+
+.main-container {
+    @apply flex-1 flex flex-col;
+    @apply bg-gray-100;
+}
+
+/* Main content area */
+main {
+    @apply flex-1;
+}
+
+/* Breadcrumbs styling */
+.breadcrumb {
+    @apply flex items-center gap-2 text-sm;
+    @apply text-gray-600 mb-6;
+}
+
+.breadcrumb a {
+    @apply hover:text-brand-600 transition-colors;
+}
+
+.breadcrumb svg {
+    @apply w-4 h-4 text-gray-400;
+}
+
+/* ========================================
+   PAGE-SPECIFIC COMPONENTS
+   ======================================== */
+
+/* Project detail cards */
+.project-stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6;
+}
+
+.project-stat-card {
+    @apply bg-white rounded-xl shadow-sm p-6;
+    @apply border border-gray-200;
+    @apply hover:shadow-md transition-shadow duration-200;
+}
+
+.project-stat-label {
+    @apply text-sm font-medium text-gray-600 mb-2;
+}
+
+.project-stat-value {
+    @apply text-2xl font-bold text-gray-900;
+}
+
+/* Tabs navigation */
+.tabs-nav {
+    @apply flex items-center gap-6 border-b border-gray-200 mb-6;
+    @apply overflow-x-auto;
+}
+
+.tab-item {
+    @apply flex items-center gap-2 px-4 py-3;
+    @apply text-gray-600 font-medium text-sm;
+    @apply border-b-2 border-transparent;
+    @apply hover:text-brand-600 hover:border-brand-200;
+    @apply transition-all duration-200;
+    @apply cursor-pointer whitespace-nowrap;
+}
+
+.tab-item.active {
+    @apply text-brand-600 border-brand-600;
+}
+
+.tab-item svg {
+    @apply w-5 h-5;
+}
+
+/* Document sections */
+.document-section {
+    @apply bg-white rounded-xl shadow-md;
+    @apply border border-gray-200/50 p-6;
+    @apply mb-4;
+}
+
+.document-header {
+    @apply flex items-center justify-between;
+    @apply pb-4 border-b border-gray-200;
+    @apply cursor-pointer;
+}
+
+.document-title {
+    @apply text-lg font-semibold text-gray-900;
+}
+
+.document-body {
+    @apply pt-4;
+}
+
+.document-item {
+    @apply flex items-center justify-between;
+    @apply p-4 rounded-lg;
+    @apply hover:bg-gray-50;
+    @apply transition-colors duration-150;
+}
+
+.document-info {
+    @apply flex items-center gap-4;
+}
+
+.document-icon {
+    @apply w-12 h-12 flex items-center justify-center;
+    @apply bg-red-50 rounded-lg;
+}
+
+.document-meta {
+    @apply flex items-center gap-3 text-sm text-gray-600;
+}
+
+.document-actions {
+    @apply flex items-center gap-2;
+}
+
+/* Empty state */
+.empty-state {
+    @apply flex flex-col items-center justify-center;
+    @apply py-12 text-center;
+}
+
+.empty-state-icon {
+    @apply w-24 h-24 text-gray-300 mb-4;
+}
+
+.empty-state-text {
+    @apply text-gray-500 mb-4;
+}
+
+/* ========================================
+   DARK MODE - Disabled (Use light theme always)
+   ======================================== */
+/* Dark mode auto-detection removed to maintain consistent light theme */
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes slideInRight {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.theme-animate-slide-in {
+    animation: slideInRight 0.3s var(--ease-in-out);
+}
+
+.theme-animate-fade-in {
+    animation: fadeIn 0.3s var(--ease-in-out);
+}
+
+.theme-animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+    @apply inline-flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium transition shadow-theme-xs hover:shadow-theme-md cursor-pointer;
+}
+
+.btn.sm {
+    @apply px-3 py-2 text-sm;
+}
+
+.btn.xs {
+    @apply px-2 py-1.5 text-xs;
+}
+
+.btn.lg {
+    @apply px-5 py-3 text-lg;
+}
+
+.btn.xl {
+    @apply px-7 py-4 text-xl;
+}

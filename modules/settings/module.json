@@ -1,0 +1,70 @@
+{
+    "id": "settings",
+    "id_case": {
+        "snake": "settings",
+        "pascal": "Settings",
+        "slug": "settings",
+        "studly": "settings"
+    },
+    "name": "Settings",
+    "description": "Settings Module for managing database configuration and languages",
+    "version": "1.0.0",
+    "author": "",
+    "email": "",
+    "git_repo": "",
+    "url_prefix": "settings",
+    "load_priority": 100,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "backend": {
+            "name": "__settings::menu.settings",
+            "position": 999,
+            "class": "",
+            "icon": "fa-solid fa-cog",
+            "acl": "settings.any",
+            "sub": {
+                "configuration": {
+                    "id": "configuration",
+                    "name": "__settings::menu.configuration",
+                    "route": "settings.configuration",
+                    "class": "",
+                    "icon": "fa-solid fa-sliders",
+                    "acl": "settings.configuration"
+                },
+                "languages": {
+                    "id": "languages",
+                    "name": "__settings::menu.languages",
+                    "route": "settings.languages",
+                    "class": "",
+                    "icon": "fa-solid fa-language",
+                    "acl": "settings.languages"
+                }
+            }
+        }
+    },
+    "acl": {
+        "configuration": {
+            "label": "__settings::acl.configuration",
+            "create": 0,
+            "read": 1,
+            "update": 1,
+            "delete": 0
+        },
+        "languages": {
+            "label": "__settings::acl.languages",
+            "create": 0,
+            "read": 1,
+            "update": 1,
+            "delete": 0
+        }
+    }
+}

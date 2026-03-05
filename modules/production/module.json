@@ -1,0 +1,49 @@
+{
+    "id": "production",
+    "id_case": {
+        "snake": "production",
+        "pascal": "Production",
+        "slug": "production",
+        "studly": "production"
+    },
+    "name": "Production",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Production (HPP)",
+            "position": 4,
+            "icon": "fa-solid fa-industry",
+            "sub": {
+                "products": {
+                    "id": "products",
+                    "name": "Resep & HPP",
+                    "route": "production.products.index",
+                    "icon": "fa-solid fa-clipboard-list"
+                },
+                "manufactures": {
+                    "id": "manufactures",
+                    "name": "Eksekusi Produksi",
+                    "route": "production.manufactures.index",
+                    "icon": "fa-solid fa-scissors"
+                }
+            }
+        }
+    }
+}

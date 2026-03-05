@@ -1,0 +1,7 @@
+config/compiled
+config/apps.dev.json
+config/auth.dev.json
+config/modules.dev.json
+config/system.dev.json
+_ide_helper.php
+.phpactor.json

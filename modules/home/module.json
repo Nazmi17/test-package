@@ -1,0 +1,42 @@
+{
+    "id": "home",
+    "id_case": {
+        "snake": "home",
+        "pascal": "Home",
+        "slug": "home",
+        "studly": "home"
+    },
+    "name": "Home Module",
+    "description": "Home Module",
+    "version": "0.1.0",
+    "author": "Adods",
+    "email": "theadods@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {
+            "index": {
+                "id": "index",
+                "name": "__home::menu.fe.index",
+                "route": "home.landing"
+            }
+        },
+        "backend": {
+            "name": "__home::menu.be.index",
+            "position": 0,
+            "route": "home.dashboard",
+            "class": "",
+            "icon": "fa-solid fa-house"
+        }
+    }
+}

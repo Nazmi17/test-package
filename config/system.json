@@ -1,0 +1,15 @@
+{
+    "env": "dev",
+    "laravel_key": "base64:r5iekKOWHt5IidstzoVTpINEPJOQ5BN+80xsotVPDPY=",
+    "multilang": 0,
+    "locale": {
+        "en": "English"
+    },
+    "fallback_locale": "en",
+    "has_auth": 1,
+    "has_acl": 1,
+    "force_secure": false,
+    "public_path": "\/public",
+    "public_url": "\/",
+    "userfile_url": "\/storage\/"
+}

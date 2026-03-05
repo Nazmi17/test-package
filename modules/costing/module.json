@@ -1,0 +1,49 @@
+{
+    "id": "costing",
+    "id_case": {
+        "snake": "costing",
+        "pascal": "Costing",
+        "slug": "costing",
+        "studly": "costing"
+    },
+    "name": "Costing",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Costing (Biaya)",
+            "position": 3,
+            "icon": "fa-solid fa-money-bill-wave",
+            "sub": {
+                "labors": {
+                    "id": "labors",
+                    "name": "Tenaga Kerja",
+                    "route": "costing.labors.index",
+                    "icon": "fa-solid fa-people-group"
+                },
+                "overheads": {
+                    "id": "overheads",
+                    "name": "Biaya Overhead",
+                    "route": "costing.overheads.index",
+                    "icon": "fa-solid fa-money-bill-wave"
+                }
+            }
+        }
+    }
+}

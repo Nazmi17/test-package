@@ -1,0 +1,36 @@
+{
+    "id": "purchasing",
+    "id_case": {
+        "snake": "purchasing",
+        "pascal": "Purchasing",
+        "slug": "purchasing",
+        "studly": "purchasing"
+    },
+    "name": "Purchasing",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Purchasing (Beli Bahan)",
+            "position": 5,
+            "route": "purchasing.purchases.index",
+            "icon": "fa-solid fa-cart-shopping" 
+        }
+    }
+}

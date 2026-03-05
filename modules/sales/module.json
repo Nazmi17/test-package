@@ -1,0 +1,36 @@
+{
+    "id": "sales",
+    "id_case": {
+        "snake": "sales",
+        "pascal": "Sales",
+        "slug": "sales",
+        "studly": "sales"
+    },
+    "name": "Sales",
+    "description": "",
+    "version": "0.1.0",
+    "author": "Nazmi Ramadani",
+    "email": "ramadaninazmi44@gmail.com",
+    "git_repo": "",
+    "url_prefix": "",
+    "load_priority": 99,
+    "dependencies": {
+        "npm": {
+            "main": {},
+            "dev": {}
+        },
+        "composer": {
+            "main": {},
+            "dev": {}
+        }
+    },
+    "nav": {
+        "frontend": {},
+        "backend": {
+            "name": "Penjualan (Sales)",
+            "position": 6,
+            "route": "sales.sales.index",
+            "icon": "fa-solid fa-cash-register"
+        }
+    }
+}

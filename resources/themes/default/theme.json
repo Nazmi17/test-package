@@ -1,0 +1,63 @@
+{
+  "id": "default",
+  "name": "Synapse Professional",
+  "version": "1.0.0",
+  "author": "VM Engine",
+  "description": "A modern, professional theme showcasing Synapse theming capabilities with comprehensive UI components",
+  "framework": "tailwind",
+  "tailwind_version": "4.x",
+  "alpine_version": "3.x",
+  "layouts": ["app", "guest", "frontend"],
+  "features": [
+    "Responsive sidebar with collapse",
+    "Dark mode support",
+    "Modern gradient design",
+    "Comprehensive component library",
+    "Alpine.js interactive components",
+    "Smooth animations and transitions",
+    "Accessibility-first design",
+    "Mobile-optimized layouts"
+  ],
+  "color_scheme": {
+    "primary": "Blue gradient (oklch 240 hue)",
+    "dark_mode": "Supported via @media (prefers-color-scheme: dark)"
+  },
+  "css": {
+    "all": [],
+    "app": [],
+    "guest": [],
+    "frontend": []
+  },
+  "js": {
+    "all": [],
+    "app": [],
+    "guest": [],
+    "frontend": []
+  },
+  "headers": {
+    "all": [],
+    "app": [],
+    "guest": [],
+    "frontend": []
+  },
+  "components": {
+    "sidebar": "Collapsible sidebar with gradient background",
+    "header": "Fixed header with search and user menu",
+    "cards": "Modern card components with shadows",
+    "buttons": "Primary, secondary, success, danger variants",
+    "forms": "Styled form inputs with validation states",
+    "tables": "Responsive table with hover states",
+    "badges": "Status badges with color variants",
+    "modals": "Alpine.js powered modals",
+    "notifications": "Toast notification system",
+    "tooltips": "Hover tooltips",
+    "dropdowns": "Click-away dropdowns"
+  },
+  "customization": {
+    "colors": "Edit @theme section in css/theme.css",
+    "spacing": "Modify CSS variables in @theme block",
+    "typography": "Adjust font sizes and weights in @theme",
+    "components": "Customize component styles in css/theme.css",
+    "javascript": "Add Alpine.js components in js/theme.js"
+  }
+}
