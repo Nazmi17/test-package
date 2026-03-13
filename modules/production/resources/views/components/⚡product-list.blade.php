@@ -10,9 +10,21 @@ new class extends Component {
 
     public $search = '';
     public $category_filter = '';
+    public $date_from = '';
+    public $date_to = '';
 
     public function updatedSearch() { $this->resetPage(); }
     public function updatedCategoryFilter() { $this->resetPage(); }
+    public function updatedDateFrom() { $this->resetPage(); }
+    public function updatedDateTo() { $this->resetPage(); }
+
+    public function resetFilters()
+    {
+        $this->category_filter = '';
+        $this->date_from = '';
+        $this->date_to = '';
+        $this->resetPage();
+    }
 
     public function delete($id, $token)
     {
@@ -42,6 +54,14 @@ new class extends Component {
             $query->where('category_id', $this->category_filter);
         }
 
+        if (!empty($this->date_from)) {
+            $query->whereDate('created_at', '>=', $this->date_from);
+        }
+
+        if (!empty($this->date_to)) {
+            $query->whereDate('created_at', '<=', $this->date_to);
+        }
+
         return [
             'products'   => $query->paginate(10),
             'categories' => Category::orderBy('name')->get(),
@@ -68,7 +88,7 @@ new class extends Component {
             <div class="relative" @click.outside="openFilter = false">
                 <button @click="openFilter = !openFilter" class="flex items-center justify-center border border-gray-300 bg-white hover:bg-gray-50 text-gray-600 rounded-lg h-9 w-10 shadow-sm transition-colors relative">
                     <i class="fa-solid fa-filter text-sm"></i>
-                    @if(!empty($category_filter))
+                    @if(!empty($category_filter) || !empty($date_from) || !empty($date_to))
                         <span class="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-600 border-2 border-white"></span>
@@ -79,8 +99,8 @@ new class extends Component {
                 <div x-show="openFilter" x-transition x-cloak style="display: none;" class="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg z-50 p-4">
                     <div class="flex justify-between items-center mb-3 border-b pb-2">
                         <h4 class="text-sm font-bold text-gray-800">Filter Data</h4>
-                        @if(!empty($category_filter))
-                            <button wire:click="$set('category_filter', '')" class="text-[10px] text-red-500 hover:underline font-bold">Reset</button>
+                        @if(!empty($category_filter) || !empty($date_from) || !empty($date_to))
+                            <button wire:click="resetFilters()" class="text-[10px] text-red-500 hover:underline font-bold">Reset</button>
                         @endif
                     </div>
 
@@ -93,6 +113,14 @@ new class extends Component {
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Dari Tanggal</label>
+                            <input wire:model.live="date_from" type="date" class="w-full border px-3 py-2 rounded-lg bg-gray-50 text-sm focus:ring-2 focus:ring-blue-200 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">Sampai Tanggal</label>
+                            <input wire:model.live="date_to" type="date" class="w-full border px-3 py-2 rounded-lg bg-gray-50 text-sm focus:ring-2 focus:ring-blue-200 outline-none">
                         </div>
                     </div>
                 </div>
@@ -143,3 +171,11 @@ new class extends Component {
     </div>
     <div class="mt-4">{{ $products->links() }}</div>
 </div>
+
+<style>
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: block !important;
+        opacity: 1 !important;
+        cursor: pointer;
+    }
+</style>

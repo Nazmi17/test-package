@@ -18,7 +18,6 @@ new class extends Component {
 
     public function mount($id = null)
     {
-        // Hanya ambil produk yang sudah di-setup HPP-nya (punya total_hpp > 0)
         $this->masterProducts = Product::where('total_hpp', '>', 0)->get();
         $this->production_date = date('Y-m-d');
 
@@ -32,6 +31,12 @@ new class extends Component {
         } else {
             $this->manufacture_number = 'MFG-' . date('Ymd') . '-' . rand(100, 999);
         }
+    }
+
+    public function getSelectedProductProperty()
+    {
+        if (!$this->product_id) return null;
+        return Product::with('materials')->find($this->product_id);
     }
 
     public function save()
@@ -49,11 +54,20 @@ new class extends Component {
             'status' => 'required|in:draft,on_process,done',
         ]);
 
+        $product = Product::with(['materials', 'labors', 'overheads'])->findOrFail($this->product_id);
+
+        if ($this->status === 'done' || $this->status === 'on_process') {
+            foreach ($product->materials as $material) {
+                $neededQty = ($this->qty * $material->pivot->quantity_required) * (1 + ($material->pivot->waste_percentage / 100));
+                if ($material->stock < $neededQty) {
+                    session()->flash('error', 'Stok bahan baku ' . $material->name . ' tidak mencukupi. Butuh: ' . $neededQty . ', Tersedia: ' . $material->stock);
+                    return;
+                }
+            }
+        }
+
         DB::beginTransaction();
         try {
-            $product = Product::with(['materials', 'labors', 'overheads'])->findOrFail($this->product_id);
-            
-            // Simpan Transaksi Produksi
             $manufacture = Manufacture::updateOrCreate(
                 ['id' => $this->manufacture->id ?? null],
                 [
@@ -61,12 +75,11 @@ new class extends Component {
                     'product_id' => $this->product_id,
                     'production_date' => $this->production_date,
                     'qty' => $this->qty,
-                    'total_hpp' => $product->total_hpp, // Snapshot HPP saat itu
+                    'total_hpp' => $product->total_hpp,
                     'status' => $this->status
                 ]
             );
 
-            // JIKA STATUS SELESAI, JALANKAN PROSES AKUNTANSI & INVENTORY
             if ($this->status === 'done') {
                 $this->processCompletion($manufacture, $product);
             }
@@ -83,18 +96,14 @@ new class extends Component {
 
     private function processCompletion(Manufacture $manufacture, Product $product)
     {
-        // 1. POTONG STOK BAHAN BAKU BERDASARKAN RESEP
         $totalMaterialCost = 0;
         foreach ($product->materials as $material) {
-            // Hitung kebutuhan bahan (Qty Produk * Qty Resep) + waste
             $neededQty = ($manufacture->qty * $material->pivot->quantity_required) * (1 + ($material->pivot->waste_percentage / 100));
             $totalMaterialCost += ($neededQty * $material->cost_per_unit);
 
-            // Potong Master Stok Material
             $newMaterialStock = $material->stock - $neededQty;
             $material->update(['stock' => $newMaterialStock]);
 
-            // Catat ke Kartu Stok (Material Keluar)
             $material->ledgers()->create([
                 'transaction_type' => 'out',
                 'reference_type' => 'Production',
@@ -105,11 +114,9 @@ new class extends Component {
             ]);
         }
 
-        // 2. TAMBAH STOK BARANG JADI (PRODUK)
         $newProductStock = $product->stock + $manufacture->qty;
         $product->update(['stock' => $newProductStock]);
         
-        // Catat ke Kartu Stok (Produk Masuk)
         $product->ledgers()->create([
             'transaction_type' => 'in',
             'reference_type' => 'Production',
@@ -119,7 +126,6 @@ new class extends Component {
             'description' => 'Hasil Produksi (No: ' . $manufacture->manufacture_number . ')'
         ]);
 
-        // 3. JURNAL AKUNTANSI (Pembukuan)
         $journal = Journal::create([
             'journal_number' => 'J.MFG.' . str_pad($manufacture->id, 4, '0', STR_PAD_LEFT),
             'transaction_date' => $manufacture->production_date,
@@ -128,29 +134,25 @@ new class extends Component {
             'description' => 'Produksi ' . $manufacture->qty . ' pcs ' . $product->name . ' (No: ' . $manufacture->manufacture_number . ')'
         ]);
 
-        // Mapping Akun
-        $akunProduk = Account::where('account_code', '1-1003')->first()->id; // Asset: Persediaan Barang Produksi
-        $akunBahan = Account::where('account_code', '1-1002')->first()->id;  // Asset: Persediaan Bahan Baku
-        $akunKas = Account::where('account_code', '1-1001')->first()->id;    // Asset: Kas (untuk bayar jasa/overhead)
+        $akunProduk = Account::where('account_code', '1-1003')->first()->id;
+        $akunBahan = Account::where('account_code', '1-1002')->first()->id;
+        $akunKas = Account::where('account_code', '1-1001')->first()->id;
 
         $totalHppKeseluruhan = $manufacture->total_hpp * $manufacture->qty;
         $totalJasaOverhead = $totalHppKeseluruhan - $totalMaterialCost;
 
-        // Debit: Persediaan Barang Jadi Bertambah
         $journal->details()->create([
             'account_id' => $akunProduk,
             'debit' => $totalHppKeseluruhan,
             'credit' => 0
         ]);
 
-        // Kredit: Persediaan Bahan Baku Berkurang
         $journal->details()->create([
             'account_id' => $akunBahan,
             'debit' => 0,
             'credit' => $totalMaterialCost
         ]);
 
-        // Kredit: Kas Berkurang (Untuk bayar penjahit & overhead pabrik)
         if ($totalJasaOverhead > 0) {
             $journal->details()->create([
                 'account_id' => $akunKas,
@@ -162,8 +164,14 @@ new class extends Component {
 };
 ?>
 
-<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
     <h2 class="text-2xl font-bold mb-6">{{ $manufacture ? 'Detail' : 'Mulai' }} Eksekusi Produksi</h2>
+
+    @if (session()->has('error'))
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+            <p class="text-sm text-red-700">{{ session('error') }}</p>
+        </div>
+    @endif
 
     @if($status === 'done' && $manufacture)
     <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
@@ -187,7 +195,7 @@ new class extends Component {
 
         <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">Pilih Barang Jadi yang akan Diproduksi</label>
-            <select wire:model="product_id" class="w-full border px-3 py-2 rounded-lg" required @if($status === 'done' && $manufacture) disabled @endif>
+            <select wire:model.live="product_id" class="w-full border px-3 py-2 rounded-lg" required @if($status === 'done' && $manufacture) disabled @endif>
                 <option value="">-- Pilih Produk (BOM) --</option>
                 @foreach($masterProducts as $p)
                     <option value="{{ $p->id }}">{{ $p->sku }} - {{ $p->name }} (HPP/pcs: Rp{{ number_format($p->total_hpp, 0, ',', '.') }})</option>
@@ -198,7 +206,7 @@ new class extends Component {
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1">Target Produksi (QTY pcs)</label>
-                <input wire:model="qty" type="number" min="1" class="w-full border px-3 py-2 rounded-lg text-xl font-bold text-blue-700" required @if($status === 'done' && $manufacture) disabled @endif>
+                <input wire:model.live="qty" type="number" min="1" class="w-full border px-3 py-2 rounded-lg text-xl font-bold text-blue-700" required @if($status === 'done' && $manufacture) disabled @endif>
             </div>
             <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1">Status Produksi</label>
@@ -209,6 +217,49 @@ new class extends Component {
                 </select>
             </div>
         </div>
+
+        @if($this->selected_product)
+        <div class="mt-6 border rounded-lg overflow-hidden">
+            <div class="bg-gray-50 px-4 py-3 border-b">
+                <h3 class="text-sm font-bold text-gray-700">Estimasi Kebutuhan Bahan Baku</h3>
+            </div>
+            <div class="p-4">
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-gray-500 border-b">
+                            <th class="pb-2">Bahan Baku</th>
+                            <th class="pb-2">Kebutuhan /pcs</th>
+                            <th class="pb-2">Total Kebutuhan</th>
+                            <th class="pb-2">Stok Tersedia</th>
+                            <th class="pb-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($this->selected_product->materials as $material)
+                            @php
+                                $kebutuhanPerPcs = $material->pivot->quantity_required * (1 + ($material->pivot->waste_percentage / 100));
+                                $totalKebutuhan = $kebutuhanPerPcs * (int)$qty;
+                                $isCukup = $material->stock >= $totalKebutuhan;
+                            @endphp
+                            <tr class="border-b last:border-0">
+                                <td class="py-2">{{ $material->name }}</td>
+                                <td class="py-2">{{ number_format($kebutuhanPerPcs, 2) }} {{ $material->unit }}</td>
+                                <td class="py-2 font-bold">{{ number_format($totalKebutuhan, 2) }} {{ $material->unit }}</td>
+                                <td class="py-2">{{ number_format($material->stock, 2) }} {{ $material->unit }}</td>
+                                <td class="py-2">
+                                    @if($isCukup)
+                                        <span class="text-green-600 bg-green-100 px-2 py-1 rounded text-xs">Cukup</span>
+                                    @else
+                                        <span class="text-red-600 bg-red-100 px-2 py-1 rounded text-xs">Kurang</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
 
         <div class="flex gap-3 pt-6 border-t">
             @if(!($status === 'done' && $manufacture))
