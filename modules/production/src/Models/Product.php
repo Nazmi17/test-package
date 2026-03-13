@@ -24,6 +24,7 @@ class Product extends Model
         'total_hpp',
         'suggested_price',
         'stock',
+        'category_id',
     ];
 
     public function materials() {
@@ -80,6 +81,11 @@ class Product extends Model
     public function ledgers()
     {
         return $this->morphMany(\SynApps\Modules\Inventory\Models\StockLedger::class, 'item');
+    }
+
+    public function category() 
+    {
+        return $this->belongsTo(\SynApps\Modules\Inventory\Models\Category::class);
     }
     
     protected function casts(): array

@@ -52,8 +52,8 @@ new class extends Component {
 
     <form wire:submit="save" class="space-y-4">
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Nama Jasa (Contoh: Jahit Kemeja)</label>
-            <input wire:model="name" type="text" class="w-full border px-4 py-2 rounded-lg" required>
+            <label class="block text-gray-700 font-medium mb-1">Nama Jasa</label>
+            <input wire:model="name" type="text" class="w-full border px-4 py-2 rounded-lg" placeholder="Contoh: Jahit Kemeja" required>
             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
@@ -69,7 +69,7 @@ new class extends Component {
 
             <div>
                 <label class="block text-gray-700 font-medium mb-1">Tarif Dasar (Rp)</label>
-                <input wire:model="default_cost" type="number" class="w-full border px-4 py-2 rounded-lg" required>
+                <input wire:model="default_cost" type="number" class="w-full border px-4 py-2 rounded-lg" placeholder="Contoh: 15000" required>
                 @error('default_cost') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
         </div>

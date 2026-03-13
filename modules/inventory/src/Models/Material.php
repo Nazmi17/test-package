@@ -14,11 +14,16 @@ class Material extends Model
     use HasFactory;
     use WithDeleteToken;
 
-    protected $fillable = ['name', 'unit', 'cost_per_unit', 'stock'];
+    protected $fillable = ['code', 'name', 'unit', 'cost_per_unit', 'stock'];
 
     public function ledgers()
     {
         return $this->morphMany(StockLedger::class, 'item');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 
     protected function casts(): array

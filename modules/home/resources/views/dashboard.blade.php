@@ -1,9 +1,5 @@
 <x-synapps::layouts.app>
-    <div
-        class="p-5"
-        x-data="{ pageName: 'Dashboard', isHome: true }"
-    >
-        @include('synapps::components.layouts.partials.breadcrumbs')
-        <h3 class="text-2xl">Dashboard jijk</h3>
+    <div class="p-6 bg-gray-50 min-h-screen" x-data="{ pageName: 'Dashboard', isHome: true }">
+        <livewire:home::dashboard-stats />
     </div>
 </x-synapps::layouts.app>

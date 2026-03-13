@@ -27,10 +27,29 @@
     "nav": {
         "frontend": {},
         "backend": {
-            "name": "Inventory (Bahan)",
+            "name": "Inventory (Gudang)",
             "position": 2,
-            "route": "inventory.materials.index",
-            "icon": "fa-solid fa-box-open"
+            "icon": "fa-solid fa-box-open",
+            "sub": {
+                "categories": {
+                    "id": "categories",
+                    "name": "Kategori Barang",
+                    "route": "inventory.categories.index",
+                    "icon": "fa-solid fa-tags"
+                },
+                "materials": {
+                    "id": "materials",
+                    "name": "Bahan Baku",
+                    "route": "inventory.materials.index",
+                    "icon": "fa-solid fa-box-open"
+                },
+                "stock-ledgers": {
+                    "id": "stock-ledgers",
+                    "name": "Kartu Stok",
+                    "route": "inventory.stock-ledgers.index",
+                    "icon": "fa-solid fa-clock-rotate-left"
+                }
+            }
         }
     }
 }

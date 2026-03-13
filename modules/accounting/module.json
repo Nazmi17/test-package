@@ -37,11 +37,23 @@
                     "route": "accounting.accounts.index",
                     "icon": "fa-solid fa-list"
                 },
+                "expenses": {
+                    "id": "expenses",
+                    "name": "Pengeluaran Kas",
+                    "route": "accounting.expenses.index",
+                    "icon": "fa-solid fa-money-bill-transfer"
+                },
                 "journals": {
                     "id": "journals",
                     "name": "Jurnal Transaksi",
                     "route": "accounting.journals.index",
                     "icon": "fa-solid fa-scale-balanced"
+                },
+                "reports": {
+                    "id": "reports",
+                    "name": "Laporan Laba Rugi",
+                    "route": "accounting.reports.income-statement",
+                    "icon": "fa-solid fa-chart-line"
                 }
             }
         }

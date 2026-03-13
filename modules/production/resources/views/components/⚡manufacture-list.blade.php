@@ -6,31 +6,37 @@ use SynApps\Modules\Production\Models\Manufacture;
 
 new class extends Component {
     use WithPagination;
+    public $search = '';
 
-    public function with()
-    {
-        return [
-            'manufactures' => Manufacture::with('product')->latest()->paginate(10)
-        ];
+    public function updatingSearch() { $this->resetPage(); }
+
+    public function with() {
+        $query = Manufacture::with('product')->latest();
+        if (!empty($this->search)) {
+            $query->where('manufacture_number', 'like', '%' . $this->search . '%')
+                  ->orWhereHas('product', function($q) {
+                      $q->where('name', 'like', '%' . $this->search . '%');
+                  });
+        }
+        return ['manufactures' => $query->paginate(10)];
     }
 };
 ?>
 
 <div class="p-6 bg-white rounded-lg shadow-sm">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
         <div>
             <h2 class="text-2xl font-bold">Data Eksekusi Produksi</h2>
             <p class="text-gray-500 text-sm mt-1">Kelola proses pembuatan barang jadi dari bahan baku.</p>
         </div>
-        <a :href="withBack('{{ route('backend.production.manufactures.create') }}')" wire:navigate class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-            + Mulai Produksi
-        </a>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative flex-1 md:w-64">
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari No. atau Produk..." class="w-full border pl-10 pr-3 py-2 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-200 outline-none">
+                <div class="absolute left-3 top-2.5 text-gray-400"><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+            <a :href="withBack('{{ route('backend.production.manufactures.create') }}')" wire:navigate class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 whitespace-nowrap">+ Mulai Produksi</a>
+        </div>
     </div>
-
-    @if(session('success'))
-        <x-synapse-alert type="success" :message="session('success')" />
-    @endif
-
     <div class="overflow-x-auto">
         <table class="w-full border-collapse">
             <thead>
@@ -53,22 +59,14 @@ new class extends Component {
                     <td class="p-3 text-center font-bold">{{ $item->qty }} pcs</td>
                     <td class="p-3 text-right">Rp {{ number_format($item->total_hpp * $item->qty, 0, ',', '.') }}</td>
                     <td class="p-3 text-center">
-                        @if($item->status == 'done')
-                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">SELESAI</span>
-                        @elseif($item->status == 'on_process')
-                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded">PROSES</span>
-                        @else
-                            <span class="px-2 py-1 bg-gray-200 text-gray-800 text-xs font-bold rounded">DRAFT</span>
-                        @endif
+                        <span class="px-2 py-1 bg-gray-200 text-gray-800 text-xs font-bold rounded uppercase">{{ $item->status }}</span>
                     </td>
                     <td class="p-3 text-center">
                         <a :href="withBack('{{ route('backend.production.manufactures.edit', $item->id) }}')" wire:navigate class="text-blue-500 hover:underline">Detail</a>
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="7" class="p-6 text-center text-gray-500">Belum ada data produksi.</td>
-                </tr>
+                <tr><td colspan="7" class="p-6 text-center text-gray-500">Data tidak ditemukan.</td></tr>
                 @endforelse
             </tbody>
         </table>

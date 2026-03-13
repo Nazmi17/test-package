@@ -14,21 +14,50 @@ new class extends Component {
     
     // Form Master
     public $sku, $name, $markup_percentage = 30;
+    public $category_id;
 
     // Form Dynamic Arrays
     public $selectedMaterials = [];
     public $selectedLabors = [];
     public $selectedOverheads = [];
+    public $availableCategories = [];
 
     // Master Data untuk Dropdown
     public $masterMaterials, $masterLabors, $masterOverheads;
 
+    // --- TAMBAHKAN FUNGSI HELPER INI ---
+    public function loadFilteredMaterials()
+    {
+        if ($this->category_id) {
+            $this->masterMaterials = Material::whereHas('categories', function($q) {
+                $q->where('categories.id', $this->category_id);
+            })->get();
+        } else {
+            // Jika belum pilih kategori, kosongkan dropdown bahan
+            $this->masterMaterials = collect(); 
+        }
+    }
+
+    // --- TAMBAHKAN LIFECYCLE HOOK INI ---
+    // Fungsi ini akan OTOMATIS JALAN setiap kali wire:model="category_id" berubah di frontend
+    public function updatedCategoryId($value)
+    {
+        $this->loadFilteredMaterials();
+        
+        // (Opsional tapi direkomendasikan): 
+        // Reset pilihan bahan baku kalau user iseng ganti kategori di tengah jalan
+        // biar bahan dari kategori sebelumnya gak ikut kesimpan
+        $this->selectedMaterials = [];
+        $this->addMaterial();
+    }
+
+    // --- UPDATE FUNGSI MOUNT KAMU JADI SEPERTI INI ---
     public function mount($id = null)
     {
-        // Load data dropdown
-        $this->masterMaterials = Material::all();
+        // Load data dropdown (Hapus pemanggilan Material::all() dari sini)
         $this->masterLabors = LaborService::all();
         $this->masterOverheads = Overhead::all();
+        $this->availableCategories = \SynApps\Modules\Inventory\Models\Category::orderBy('name')->get();
 
         if ($id) {
             // Mode EDIT
@@ -36,6 +65,10 @@ new class extends Component {
             $this->sku = $this->product->sku;
             $this->name = $this->product->name;
             $this->markup_percentage = $this->product->markup_percentage;
+            $this->category_id = $this->product->category_id;
+
+            // Panggil helper untuk memfilter bahan baku sesuai category_id yang di-load
+            $this->loadFilteredMaterials();
 
             // Load data pivot ke array form
             foreach ($this->product->materials as $m) {
@@ -48,7 +81,9 @@ new class extends Component {
                 $this->selectedOverheads[] = ['id' => $o->id, 'cost' => $o->pivot->allocated_cost];
             }
         } else {
-            // Mode CREATE: Kasih 1 baris kosong default
+            // Mode CREATE
+            $this->masterMaterials = collect(); // Awalnya kosongkan dulu dropdown bahannya
+
             $this->addMaterial();
             $this->addLabor();
             $this->addOverhead();
@@ -72,6 +107,7 @@ new class extends Component {
             'sku' => 'required|string|unique:products,sku,' . ($this->product->id ?? 'NULL'),
             'name' => 'required|string',
             'markup_percentage' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         // 1. Simpan Data Master Produk
@@ -123,7 +159,7 @@ new class extends Component {
         {{-- SECTION 1: INFO PRODUK --}}
         <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
             <h3 class="font-bold text-lg mb-4">Informasi Produk</h3>
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-4 gap-4">
                 <div>
                     <label class="block text-gray-700 text-sm mb-1">SKU</label>
                     <input wire:model="sku" type="text" class="w-full border px-3 py-2 rounded-lg" placeholder="Contoh: KMJ-001" required>
@@ -138,6 +174,16 @@ new class extends Component {
                     <label class="block text-gray-700 text-sm mb-1">Markup Harga Jual (%)</label>
                     <input wire:model="markup_percentage" type="number" class="w-full border px-3 py-2 rounded-lg" required>
                 </div>
+                <div>
+                    <label class="block text-gray-700 font-bold mb-1 text-sm">Kategori Produk</label>
+                    {{-- PERHATIKAN .live DI BAWAH INI --}}
+                    <select wire:model.live="category_id" class="w-full border px-4 py-2 rounded-lg bg-white focus:ring-2 focus:ring-blue-300" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach($availableCategories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -145,29 +191,38 @@ new class extends Component {
         <div>
             <div class="flex justify-between items-center mb-2">
                 <h3 class="font-bold text-lg">1. Bahan Baku (Materials)</h3>
-                <button type="button" wire:click="addMaterial" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded">+ Tambah Bahan</button>
+                <button type="button" wire:click="addMaterial" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded font-bold hover:bg-blue-200 transition-colors">+ Tambah Bahan</button>
             </div>
+            
+            @if(empty($category_id))
+                <div class="p-4 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded-lg text-sm mb-4">
+                    <i class="fa-solid fa-circle-info mr-2"></i> Silakan pilih <b>Kategori Produk</b> di atas terlebih dahulu agar daftar bahan baku bisa ditampilkan.
+                </div>
+            @endif
+
             <div class="space-y-2">
                 @foreach($selectedMaterials as $index => $material)
-                <div class="flex gap-2 items-end">
+                {{-- KUNCI PERBAIKAN: Tambahkan $category_id ke dalam wire:key --}}
+                <div wire:key="mat-row-{{ $index }}-{{ $category_id }}" class="flex gap-2 items-end">
                     <div class="flex-1">
                         <label class="text-xs text-gray-500">Pilih Bahan</label>
-                        <select wire:model="selectedMaterials.{{ $index }}.id" class="w-full border px-3 py-2 rounded-lg">
-                            <option value="">-- Pilih --</option>
+                        {{-- Menggunakan format HTML tradisional agar lebih mudah dibaca Livewire --}}
+                        <select wire:model="selectedMaterials.{{ $index }}.id" class="w-full border px-3 py-2 rounded-lg" {{ empty($category_id) ? 'disabled' : '' }}>
+                            <option value="">-- Pilih Bahan Baku --</option>
                             @foreach($masterMaterials as $m)
-                                <option value="{{ $m->id }}">{{ $m->name }} (Rp{{ number_format($m->cost_per_unit, 0, ',', '.') }}/{{ $m->unit }})</option>
+                                <option value="{{ $m->id }}" wire:key="mat-opt-{{ $m->id }}-{{ $category_id }}">{{ $m->name }} (Rp{{ number_format($m->cost_per_unit, 0, ',', '.') }}/{{ $m->unit }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="w-32">
                         <label class="text-xs text-gray-500">Kebutuhan (Qty)</label>
-                        <input wire:model="selectedMaterials.{{ $index }}.qty" type="number" step="0.01" class="w-full border px-3 py-2 rounded-lg">
+                        <input wire:model="selectedMaterials.{{ $index }}.qty" type="number" step="0.01" class="w-full border px-3 py-2 rounded-lg" {{ empty($category_id) ? 'disabled' : '' }}>
                     </div>
                     <div class="w-32">
                         <label class="text-xs text-gray-500">Waste (%)</label>
-                        <input wire:model="selectedMaterials.{{ $index }}.waste" type="number" class="w-full border px-3 py-2 rounded-lg">
+                        <input wire:model="selectedMaterials.{{ $index }}.waste" type="number" class="w-full border px-3 py-2 rounded-lg" {{ empty($category_id) ? 'disabled' : '' }}>
                     </div>
-                    <button type="button" wire:click="removeMaterial({{ $index }})" class="bg-red-100 text-red-600 px-3 py-2 rounded-lg mb-0.5"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" wire:click="removeMaterial({{ $index }})" class="bg-red-100 text-red-600 px-3 py-2 rounded-lg mb-0.5 hover:bg-red-200 transition-colors"><i class="fa-solid fa-trash"></i></button>
                 </div>
                 @endforeach
             </div>
